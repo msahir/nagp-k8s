@@ -1,4 +1,6 @@
 This repo contains the application as well as the deployment files. It also contains the docker file to create the docker image. But a docker image is already pushed in the docker hub which can be pulled and used while deployment.</br>
+The link to code repo is: https://github.com/msahir/nagp-k8s 
+</br>
 The link to docker hub image is: https://hub.docker.com/repository/docker/mohitaheer/nagp-k8s/general
 
 Steps to run the application in the kubernates cluster:
