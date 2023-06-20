@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nagp-k8s-deployment
+  namespace : nagp
+spec:
+  selector:
+    matchLabels:
+      app: nagp-k8s-app
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: nagp-k8s-app
+    spec:
+      containers:
+        - name: nagp-k8s
+          image: mohitaheer/nagp-k8s:1.0
+          ports:
+            - containerPort: 8080
+          env:   
+            - name: DB_HOST  
+              valueFrom :
+                configMapKeyRef :
+                  name : db-config
+                  key :  dbHost
+
+            - name: DB_NAME
+              valueFrom :
+                configMapKeyRef :
+                  name : db-config
+                  key :  dbName
+
+            - name: DB_USER
+              valueFrom :
+                configMapKeyRef :
+                  name : db-config
+                  key :  dbUser
+
+            - name: DB_PASS
+              valueFrom :
+                secretKeyRef :
+                  name : db-secrets
+                  key :  dbPass
+
+---
+
+apiVersion: v1 
+kind: Service
+metadata: 
+  name: nagp-k8s-svc
+  namespace : nagp
+spec:
+  selector:
+    app: nagp-k8s-app
+  ports:
+    - protocol: "TCP"
+      port: 8080 
+  type: LoadBalancer 
+
